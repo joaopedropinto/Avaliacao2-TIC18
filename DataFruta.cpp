@@ -36,24 +36,75 @@ class Lista {
 	virtual void mostraMaior() =0;
 };
 
-class ListaNomes {
+class ListaNomes : public Lista
+{
+private:
 	vector<string> lista;
-	
-	public:
-	
-	void entradaDeDados() {
-		lista.push_back("Teste");
+
+public:
+	void entradaDeDados(const string &valor) override
+	{
+		lista.push_back(valor);
+		sort(lista.begin(), lista.end());
 	}
-		
-	void mostraMediana() {
-		cout << "Aqui vai mostrar a mediana da lista de strings" << endl;
+
+	void mostraMediana() const override
+	{
+		if (lista.empty())
+		{
+			cout << "";
+		}
+		else
+		{
+			size_t posicaoDoMeio = lista.size() / 2;
+			if (lista.size() % 2 == 0)
+			{
+				cout << lista[posicaoDoMeio - 1];
+			}
+			else
+			{
+				cout << lista[posicaoDoMeio];
+			}
+		}
 	}
-	
-	void mostraMenor() {
-		cout << "Aqui vai mostrar o primeiro nome alfabeticamente" << endl;
+
+	void mostraMaior() const override
+	{
+		if (!lista.empty())
+		{
+			cout << lista.back();
+		}
 	}
-	void mostraMaior() {
-		cout << "aqui vai mostrar o ultimo nome alfabeticamente" << endl;
+
+	void mostraMenor() const override
+	{
+		if (!lista.empty())
+		{
+			cout << lista.front();
+		}
+	}
+
+	void listarEmOrdem() const override
+	{
+		for (const string &nome : lista)
+		{
+			cout << nome << " ";
+		}
+		cout << endl;
+	}
+
+	void exibirPrimeirosN(size_t quantidade) const override
+	{
+		for (size_t i = 0; i < min(quantidade, lista.size()); i++)
+		{
+			cout << lista[i] << " ";
+		}
+		cout << endl;
+	}
+
+	bool estaVazia() const override
+	{
+		return lista.empty();
 	}
 };
 
