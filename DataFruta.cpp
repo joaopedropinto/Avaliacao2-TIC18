@@ -28,12 +28,17 @@ class Data {
 	}
 };
 
-class Lista {
-	public:
-	virtual void entradaDeDados() =0;
-	virtual void mostraMediana() =0;
-	virtual void mostraMenor() =0;
-	virtual void mostraMaior() =0;
+class Lista
+{
+public:
+	virtual void entradaDeDados(const string &valor) = 0;
+	virtual void mostraMediana() const = 0;
+	virtual void mostraMaior() const = 0;
+	virtual void mostraMenor() const = 0;
+	virtual void listarEmOrdem() const = 0;
+	virtual void exibirPrimeirosN(size_t quantidade) const = 0;
+	virtual bool estaVazia() const = 0;
+	virtual ~Lista() {}
 };
 
 class ListaNomes {
@@ -121,31 +126,111 @@ class ListaIdades  {
 	}
 };
  
-int main () {
-	vector<Lista*> listaDeListas;
-	
+int main()
+{
+	vector<Lista *> listaDeListas;
+
+	ListaData listaData;
 	ListaNomes listaNomes;
-	listaNomes.entradaDeDados();
-	listaDeListas.push_back(&listaNomes);
-	
-	ListaDatas listaDatas;
-	listaDatas.entradaDeDados();
-	listaDeListas.push_back(&listaDatas);
-	
 	ListaSalarios listaSalarios;
-	listaSalarios.entradaDeDados();
-	listaDeListas.push_back(&listaSalarios);
-	
 	ListaIdades listaIdades;
-	listaIdades.entradaDeDados();
+	string d1, d2;
+
+	listaDeListas.push_back(&listaData);
+	listaDeListas.push_back(&listaNomes);
+	listaDeListas.push_back(&listaSalarios);
 	listaDeListas.push_back(&listaIdades);
-	
-	for (Lista* l : listaDeListas) {
-		l->mostraMediana();
-		l->mostraMenor();
-		l->mostraMaior();
-	}
-	
+
+	int opcao;
+	do
+	{
+		cout << "\nMENU - DataFruta\n";
+		cout << "1. Adicionar data\n";
+		cout << "2. Adicionar nome\n";
+		cout << "3. Adicionar salario\n";
+		cout << "4. Adicionar idade\n";
+		cout << "5. Listar dados em ordem\n";
+		cout << "6. Exibir primeiros N elementos\n";
+		cout << "7. Exibir mediana, maior e menor valor de cada lista\n";
+		cout << "8. Testar datas\n";
+		cout << "9. Sair\n";
+		cout << "Digite sua opção: ";
+		cin >> opcao;
+		cin.ignore();
+
+		string valor;
+		size_t quantidade;
+		switch (opcao)
+		{
+		case 1:
+			cout << "Digite a data(dd/mm/aaaa): ";
+			getline(cin, valor);
+			listaData.entradaDeDados(valor);
+			break;
+		case 2:
+			cout << "Digite o nome: ";
+			getline(cin, valor);
+			listaNomes.entradaDeDados(valor);
+			break;
+		case 3:
+			cout << "Digite o salario: ";
+			getline(cin, valor);
+			listaSalarios.entradaDeDados(valor);
+			break;
+		case 4:
+			cout << "Digite a idade: ";
+			getline(cin, valor);
+			listaIdades.entradaDeDados(valor);
+			break;
+		case 5:
+			for (Lista *lista : listaDeListas)
+			{
+				lista->listarEmOrdem();
+			}
+			break;
+		case 6:
+			cout << "Digite o número de elementos para exibir: ";
+			cin >> quantidade;
+			cin.ignore();
+			for (Lista *lista : listaDeListas)
+			{
+				lista->exibirPrimeirosN(quantidade);
+			}
+			break;
+		case 7:
+			cout << "Exibindo mediana, maior e menor valor de cada lista:\n\n";
+
+			for (Lista *l : listaDeListas)
+			{
+				if (!l->estaVazia()) // Suponhamos que 'estaVazia' é um método que verifica se a lista está vazia
+				{
+					cout << "Mediana: ";
+					l->mostraMediana();
+					cout << "\nMaior: ";
+					l->mostraMaior();
+					cout << "\nMenor: ";
+					l->mostraMenor();
+					cout << "\n-------------------\n";
+				}
+			}
+			break;
+		case 8:
+			cout << "Insira a primeira data(dd/mm/aaaa): ";
+			cin >> d1;
+			cout << "Insira a segunda data(dd/mm/aaaa): ";
+			cin >> d2;
+			Data::CriaData(d1, d2);
+			break;
+		case 9:
+			cout << "Saindo...\n";
+			break;
+		default:
+			cout << "Opção inválida!\n";
+		}
+
+	} while (opcao != 9);
+
+	return 0;
 }
-    
+
 
