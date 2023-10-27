@@ -78,25 +78,78 @@ class ListaDatas  {
 	}
 };
 
-class ListaSalarios  {
-	vector<float> lista;
-	
-	public:
-	
-	void entradaDeDados() {
-		
-	}
-			
-	void mostraMediana() {
-		cout << "Aqui vai mostrar a mediana da lista de salarios" << endl;
-	}
-	
-	void mostraMenor() {
-		cout << "Aqui vai mostrar o menor dos salarios" << endl;
-	}
-	void mostraMaior() {
-		cout << "aqui vai mostrar o maior dos salarios" << endl;
-	}
+class ListaSalarios : public Lista
+{
+private:
+    vector<double> lista;
+
+public:
+    void entradaDeDados(const string &valor) override
+    {
+        double salario;
+        sscanf(valor.c_str(), "%lf", &salario);
+        lista.push_back(salario);
+        sort(lista.begin(), lista.end());
+    }
+
+    void mostraMediana() const override
+    {
+        if (lista.empty())
+        {
+            cout << "";
+        }
+        else
+        {
+            size_t posicaoDoMeio = lista.size() / 2;
+            if (lista.size() % 2 == 0)
+            {
+                cout << (lista[posicaoDoMeio - 1] + lista[posicaoDoMeio]) / 2.0;
+            }
+            else
+            {
+                cout << lista[posicaoDoMeio];
+            }
+        }
+    }
+
+    void mostraMaior() const override
+    {
+        if (!lista.empty())
+        {
+            cout << lista.back();
+        }
+    }
+
+    void mostraMenor() const override
+    {
+        if (!lista.empty())
+        {
+            cout << lista.front();
+        }
+    }
+
+    void listarEmOrdem() const override
+    {
+        for (double salario : lista)
+        {
+            cout << salario << " ";
+        }
+        cout << endl;
+    }
+
+    void exibirPrimeirosN(size_t quantidade) const override
+    {
+        for (size_t i = 0; i < min(quantidade, lista.size()); i++)
+        {
+            cout << lista[i] << " ";
+        }
+        cout << endl;
+    }
+
+    bool estaVazia() const override
+    {
+        return lista.empty();
+    }
 };
 
 
